@@ -5,19 +5,24 @@ import ast
 import openai
 import py2neo
 from prompt import return_prompt
+import os
+from dotenv import load_dotenv
 
-OPENAI_API_KEY='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'
+load_dotenv()
 
+app = Flask(__name__)
+
+app.config["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY")
+OPENAI_API_KEY=os.environ.get("OPENAI_API_KEY")
 # Set up OpenAI API key
 openai.api_key = OPENAI_API_KEY
 
 # Replace these with your actual Neo4j credentials
-neo4j_url = "bolt+s://272d3af7.databases.neo4j.io"
-neo4j_user = "neo4j"
-neo4j_password = "F3d6-Z3O-cZpB3vp6oQdpw8OXl21R_xFLRp9a0PTsNE"
+neo4j_url = os.environ.get("NEO4J_URL")
+neo4j_user = os.environ.get("NEO4J_USER")
+neo4j_password = os.environ.get("NEO4J_PASSWORD")
 graph = py2neo.Graph(neo4j_url, auth=(neo4j_user, neo4j_password))
 
-app = Flask(__name__)
 
 # The cosine similarity is a measure of similarity between two non-zero vectors by calculating the cosine of the angle between them
 def cosine_similarity(a, b):
