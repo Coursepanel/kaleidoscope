@@ -18,7 +18,7 @@ neo4j_password = "F3d6-Z3O-cZpB3vp6oQdpw8OXl21R_xFLRp9a0PTsNE"
 driver = GraphDatabase.driver(neo4j_url, auth=(neo4j_user, neo4j_password))
 
 # Your list of 2600 Cypher queries
-queries = read_lines_to_list('./code19.txt')
+queries = read_lines_to_list('./generated/prereq-code19.txt')
 
 # Define a function to execute a batch of queries
 

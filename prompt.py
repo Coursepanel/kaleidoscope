@@ -131,6 +131,6 @@ def return_prompt(en_statement):
     ```
 
     A user has requested for the following information from the database - {en_statement}
-
+    Extract the keywords and use them to look if a node contains that keyword inside it and generate the cypher query to fetch the information from the database
     Generate and return just the code for a cypher query against this database to actually fetch this information as distinct database entries. Return just the code, not the entire query or the explanation.
     """
