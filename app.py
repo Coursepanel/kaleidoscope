@@ -4,7 +4,7 @@ import numpy as np
 import ast
 import openai
 import py2neo
-from prompt import return_prompt
+from prompts.prompt import return_prompt
 import os
 from dotenv import load_dotenv
 
@@ -64,6 +64,13 @@ def return_similar_courses(course_id):
     similar_courses_dict_list = df.iloc[indices].drop(['ada_embedding','courseContent','text','tags'], axis=1).to_dict('records')
     similar_courses = jsonify(similar_courses_dict_list)
     return similar_courses
+
+# @app.route('/course-chat')
+# def return_similar_courses(course_id):
+#     data = request.get_json()
+#     chat_request = data.get('request')
+#     df = pd.read_csv('https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/embedded_info.csv')
+#     return 0
 
 
 @app.route('/english_to_cypher', methods=['POST'])
