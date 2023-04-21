@@ -19,11 +19,15 @@ pinecone.init(
     environment="northamerica-northeast1-gcp" # next to api key in console
 )
 index_name = "openai"
+
+print("Creating 🍍 index...")
 docsearch = Pinecone.from_documents(docs, embeddings, index_name=index_name)
+print("🍍 index created ! 🎉...")
 
 # if you already have an index, you can load it like this
 # docsearch = Pinecone.from_existing_index(index_name, embeddings)
 
 query = "Which is the best course for machine learning?"
+print("Searching for similar documents to: ", query)
 docs = docsearch.similarity_search(query)
 print(docs[0].page_content)
