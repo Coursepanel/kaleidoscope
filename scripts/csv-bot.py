@@ -1,3 +1,5 @@
+# Reference - https://python.langchain.com/en/latest/modules/agents/toolkits/examples/csv.html
+# Reference 2 - https://python.langchain.com/en/latest/modules/indexes/document_loaders/examples/csv.html
 from dotenv import load_dotenv
 from langchain import OpenAI 
 from langchain.document_loaders.csv_loader import CSVLoader

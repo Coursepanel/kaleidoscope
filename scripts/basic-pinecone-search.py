@@ -1,3 +1,4 @@
+# Reference - https://python.langchain.com/en/latest/modules/indexes/vectorstores/examples/pinecone.html
 import pinecone
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
