@@ -6,3 +6,4 @@ __pycache__
 !.elasticbeanstalk/*.global.yml
 data
 .env
+error_log.txt
