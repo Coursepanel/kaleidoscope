@@ -68,19 +68,32 @@ def return_similar_courses(course_id):
     similar_courses = jsonify(similar_courses_dict_list)
     return similar_courses
 
-# @app.route('/course-chat')
-# def return_similar_courses(course_id):
-#     data = request.get_json()
-#     chat_request = data.get('request')
-#     df = pd.read_csv('https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/embedded_info.csv')
-#     return 0
-
-
 @app.route('/hey-pinecone', methods=['GET'])
 def hey_pinecone():
     list = pinecone.list_indexes()
     # Return the query result as JSON
     return jsonify(list)
+
+
+@app.route('/pinesearch', methods=['GET'])
+def pinesearch():
+    data = request.get_json()
+    english_statement = data.get('statement')
+
+    if not english_statement:
+        return jsonify({'error': 'Statement is missing'}), 400
+    
+    # Return the query result as JSON
+    return jsonify(list)
+
+
+# !Error - TypeError: 'NoneType' object is not callable
+# @app.route('/pinecone-stats', methods=['GET'])
+# def pine_stats():
+#     index = pinecone.Index("openai")
+#     res = index.describe_index_stats()
+#     print(res._data_store)
+#     return res._data_store
 
 
 @app.route('/english_to_cypher', methods=['POST'])
@@ -108,3 +121,6 @@ def english_to_cypher():
 
     # Return the query result as JSON
     return jsonify(result)
+
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=True)
