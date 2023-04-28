@@ -7,10 +7,13 @@ import py2neo
 from prompts.prompt import return_prompt
 import os
 from dotenv import load_dotenv
+import pinecone
 
 load_dotenv()
 
 app = Flask(__name__)
+
+pinecone.init(api_key=os.environ.get("PINECONE_API_KEY"), environment="northamerica-northeast1-gcp")
 
 app.config["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY")
 OPENAI_API_KEY=os.environ.get("OPENAI_API_KEY")
@@ -71,6 +74,13 @@ def return_similar_courses(course_id):
 #     chat_request = data.get('request')
 #     df = pd.read_csv('https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/embedded_info.csv')
 #     return 0
+
+
+@app.route('/hey-pinecone', methods=['GET'])
+def hey_pinecone():
+    list = pinecone.list_indexes()
+    # Return the query result as JSON
+    return jsonify(list)
 
 
 @app.route('/english_to_cypher', methods=['POST'])
