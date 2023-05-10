@@ -5,13 +5,18 @@ import ast
 import openai
 import py2neo
 from prompts.prompt import return_prompt
+from scripts.pinecone.pinecone_over_csv import retrieve
 import os
+from flask_cors import CORS
 from dotenv import load_dotenv
 import pinecone
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
+# TODO - Apply CORS properly else openai will be fucked
+# CORS(app, origins=["http://localhost:3000", "https://example.com"])
 
 pinecone.init(api_key=os.environ.get("PINECONE_API_KEY"), environment="northamerica-northeast1-gcp")
 
@@ -75,7 +80,7 @@ def hey_pinecone():
     return jsonify(list)
 
 
-@app.route('/pinesearch', methods=['GET'])
+@app.route('/pinesearch', methods=['POST'])
 def pinesearch():
     data = request.get_json()
     english_statement = data.get('statement')
@@ -84,7 +89,8 @@ def pinesearch():
         return jsonify({'error': 'Statement is missing'}), 400
     
     # Return the query result as JSON
-    return jsonify(list)
+    result = retrieve(english_statement)
+    return jsonify({'data':result}), 200
 
 
 # !Error - TypeError: 'NoneType' object is not callable
@@ -94,7 +100,6 @@ def pinesearch():
 #     res = index.describe_index_stats()
 #     print(res._data_store)
 #     return res._data_store
-
 
 @app.route('/english_to_cypher', methods=['POST'])
 def english_to_cypher():

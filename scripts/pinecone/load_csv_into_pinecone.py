@@ -14,6 +14,9 @@ loader= CSVLoader(file_path="/Users/ankitsanghvi/Desktop/kaleido_gpt/data/nptel-
 documents = loader.load()
 text_splitter = CharacterTextSplitter(chunk_size=2048, chunk_overlap=0)
 docs = text_splitter.split_documents(tqdm(documents, desc="Splitting documents", unit="doc"))
+
+# Model used for embeddings is OpenAI's default text-embedding-ada-002 model with 1536 dimensions
+# Reference link - https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 embeddings = OpenAIEmbeddings()
 # initialize pinecone
 pinecone.init(
