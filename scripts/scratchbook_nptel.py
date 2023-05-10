@@ -1,11 +1,9 @@
 import requests
 from bs4 import BeautifulSoup, Comment
 import pandas as pd
-import numpy as np
 import htmlmin
 import openai
 import json
-from tqdm import tqdm
 from concurrent.futures import ProcessPoolExecutor
 import os
 import csv
