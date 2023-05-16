@@ -10,9 +10,9 @@ def read_lines_to_list(file_path):
 
 
 # Replace these with your actual Neo4j credentials
-neo4j_url = "bolt+s://272d3af7.databases.neo4j.io"
+neo4j_url = "--"
 neo4j_user = "neo4j"
-neo4j_password = "F3d6-Z3O-cZpB3vp6oQdpw8OXl21R_xFLRp9a0PTsNE"
+neo4j_password = "----"
 
 # Connect to the Neo4j database
 driver = GraphDatabase.driver(neo4j_url, auth=(neo4j_user, neo4j_password))

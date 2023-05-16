@@ -8,19 +8,7 @@ from concurrent.futures import ProcessPoolExecutor
 import os
 import csv
 
-openai.api_key = "s---"
-
-# https://docs.google.com/spreadsheets/d/1GNYZVseLnpxQonekssoTsP92IuHGkBlHUIgS7xzXR8E
-csv_url = 'https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/nptel-data.csv'
-basic_18_csv_url = 'https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/basic-test-data.csv'
-basic_test_csv_url = 'https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/basicest-data.csv'
-basic_6_csv_url = 'https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/basic-6.csv'
-# Load the CSV data
-data = pd.read_csv(csv_url)
-data = data.fillna('')
-data.head(5)
-
-(print(data.columns))
+openai.api_key = "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"
 
 from builtins import str
 
@@ -151,64 +139,65 @@ def append_dict_to_csv(data, csv_file):
 
 def process_csv_chunk(chunk):
     with open('error.log', 'w') as f:
-        for i, url in enumerate(chunk.iloc[:,16]):
+        for i, url in enumerate(chunk.iloc[:,12]):
             # selected_row = urls.loc[urls['Click here to join the course'] == url].idxmax()
             # selected_row_index = np.argmax(urls['Click here to join the course'] == url)
             # print(selected_row_index)
             # uid = selected_row.iloc[0,0]
+            print(url)
             updated_url = url + '/preview'
-            try:
-                # Make an API request using the value
-                print(f"--- PERFORMING OPERATION ON ROW {i}")
-                print(f"=> 1. Scraping data from url - {updated_url}")
-                scraped_info = scrape_data(updated_url);
-                print("Here's the motherfucking data - ", scraped_info,"🔥")
-                last_slash_index = url.rfind('/')
-                # Slice the string to get the part after the last slash
-                course_id = url[last_slash_index + 1:]
-                new_attributes = {
-                    'id':course_id,
-                    'intended_audience':scraped_info['intended_audience'],
-                    'instructor_name':scraped_info['instructor_name'],
-                    'instructor_bio':scraped_info['instructor_bio'],
-                    'about_the_course':scraped_info['about_the_course'],
-                    'course_layout':';'.join(scraped_info['course_layout']),
-                    'prerequisites':scraped_info['prerequisites'],
-                    'industry_support':scraped_info['industry_support'],
-                    'youtube_url':scraped_info['youtube_url'],
-                    'course_url': updated_url
+            # try:
+            #     # Make an API request using the value
+            #     print(f"--- PERFORMING OPERATION ON ROW {i}")
+            #     print(f"=> 1. Scraping data from url - {updated_url}")
+            #     scraped_info = scrape_data(updated_url);
+            #     print("Here's the motherfucking data - ", scraped_info,"🔥")
+            #     last_slash_index = url.rfind('/')
+            #     # Slice the string to get the part after the last slash
+            #     course_id = url[last_slash_index + 1:]
+            #     new_attributes = {
+            #         'id':course_id,
+            #         'intended_audience':scraped_info['intended_audience'],
+            #         'instructor_name':scraped_info['instructor_name'],
+            #         'instructor_bio':scraped_info['instructor_bio'],
+            #         'about_the_course':scraped_info['about_the_course'],
+            #         'course_layout':';'.join(scraped_info['course_layout']),
+            #         'prerequisites':scraped_info['prerequisites'],
+            #         'industry_support':scraped_info['industry_support'],
+            #         'youtube_url':scraped_info['youtube_url'],
+            #         'course_url': updated_url
 
-                }
-                # Check if the unique ID exists in the DataFrame
-                if (chunk['Click here to join the course'] == url).any():
-                    # Get the index of the row with the specified unique identifier
-                    row_index = (chunk['Click here to join the course'] == url).idxmax()
-                    print(url, row_index)
-                    # Update the row with new attributes
-                    for key, value in new_attributes.items():
-                        chunk.loc[row_index, key] = value
-                    # Get the updated row using the index
-                    print('🧩 FEEDING DICT DATA INTO CSV FILE =', row_index)
-                    # updated_row = chunk.iloc[row_index]
-                    # Write the updated row to CSV file
-                    append_dict_to_csv(new_attributes, 'incremental.csv')
+            #     }
+            #     # Check if the unique ID exists in the DataFrame
+            #     if (chunk['Click here to join the course'] == url).any():
+            #         # Get the index of the row with the specified unique identifier
+            #         row_index = (chunk['Click here to join the course'] == url).idxmax()
+            #         print(url, row_index)
+            #         # Update the row with new attributes
+            #         for key, value in new_attributes.items():
+            #             chunk.loc[row_index, key] = value
+            #         # Get the updated row using the index
+            #         print('🧩 FEEDING DICT DATA INTO CSV FILE =', row_index)
+            #         # updated_row = chunk.iloc[row_index]
+            #         # Write the updated row to CSV file
+            #         append_dict_to_csv(new_attributes, 'incremental.csv')
                     
-                    print("👍 Row updated with new attributes:")
-                else:
-                    print("Unique ID not found in the DataFrame.")
-            except Exception as e:
-                # Write the error to the log file
-                f.write(f'🚨 Error processing value {url}: {str(e)}\n')
-                continue
-            print(f'✅ Successfully scraped url' + '\n' + '----------' + '\n')
+            #         print("👍 Row updated with new attributes:")
+            #     else:
+            #         print("Unique ID not found in the DataFrame.")
+            # except Exception as e:
+            #     # Write the error to the log file
+            #     f.write(f'🚨 Error processing value {url}: {str(e)}\n')
+            #     continue
+            print(f'✅ Successfully scraped url' + updated_url + '\n' + '----------' + '\n')
     return chunk
 # Open a log file for writing errors
 
 import pandas as pd
 from concurrent.futures import ProcessPoolExecutor
 
-curr_url = 'https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/nptel_111.csv'
-file_path = basic_18_csv_url
+curr_url = 'https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/merged-pending.csv'
+file_path = curr_url
 df = pd.read_csv(file_path)
 print("🐍 Length of the dataframe currently being looked at is -",len(df))
 df.head()
@@ -227,8 +216,8 @@ def parallelize_dataframe_processing(df, func, num_partitions, num_workers):
 
     return pd.concat(processed_chunks)
 
-num_partitions = 15
-num_workers = 15
+num_partitions = 7
+num_workers = 7
 
 def main():
     processed_df = parallelize_dataframe_processing(df, process_csv_chunk, num_partitions, num_workers)
