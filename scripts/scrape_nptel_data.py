@@ -149,49 +149,49 @@ def process_csv_chunk(chunk):
             # uid = selected_row.iloc[0,0]
             print(url)
             updated_url = url + '/preview'
-            # try:
-            #     # Make an API request using the value
-            #     print(f"--- PERFORMING OPERATION ON ROW {i}")
-            #     print(f"=> 1. Scraping data from url - {updated_url}")
-            #     scraped_info = scrape_data(updated_url);
-            #     print("Here's the motherfucking data - ", scraped_info,"🔥")
-            #     last_slash_index = url.rfind('/')
-            #     # Slice the string to get the part after the last slash
-            #     course_id = url[last_slash_index + 1:]
-            #     new_attributes = {
-            #         'id':course_id,
-            #         'intended_audience':scraped_info['intended_audience'],
-            #         'instructor_name':scraped_info['instructor_name'],
-            #         'instructor_bio':scraped_info['instructor_bio'],
-            #         'about_the_course':scraped_info['about_the_course'],
-            #         'course_layout':';'.join(scraped_info['course_layout']),
-            #         'prerequisites':scraped_info['prerequisites'],
-            #         'industry_support':scraped_info['industry_support'],
-            #         'youtube_url':scraped_info['youtube_url'],
-            #         'course_url': updated_url
+            try:
+                # Make an API request using the value
+                print(f"--- PERFORMING OPERATION ON ROW {i}")
+                print(f"=> 1. Scraping data from url - {updated_url}")
+                scraped_info = scrape_data(updated_url);
+                print("Here's the motherfucking data - ", scraped_info,"🔥")
+                last_slash_index = url.rfind('/')
+                # Slice the string to get the part after the last slash
+                course_id = url[last_slash_index + 1:]
+                new_attributes = {
+                    'id':course_id,
+                    'intended_audience':scraped_info['intended_audience'],
+                    'instructor_name':scraped_info['instructor_name'],
+                    'instructor_bio':scraped_info['instructor_bio'],
+                    'about_the_course':scraped_info['about_the_course'],
+                    'course_layout':';'.join(scraped_info['course_layout']),
+                    'prerequisites':scraped_info['prerequisites'],
+                    'industry_support':scraped_info['industry_support'],
+                    'youtube_url':scraped_info['youtube_url'],
+                    'course_url': updated_url
 
-            #     }
-            #     # Check if the unique ID exists in the DataFrame
-            #     if (chunk['Click here to join the course'] == url).any():
-            #         # Get the index of the row with the specified unique identifier
-            #         row_index = (chunk['Click here to join the course'] == url).idxmax()
-            #         print(url, row_index)
-            #         # Update the row with new attributes
-            #         for key, value in new_attributes.items():
-            #             chunk.loc[row_index, key] = value
-            #         # Get the updated row using the index
-            #         print('🧩 FEEDING DICT DATA INTO CSV FILE =', row_index)
-            #         # updated_row = chunk.iloc[row_index]
-            #         # Write the updated row to CSV file
-            #         append_dict_to_csv(new_attributes, 'incremental.csv')
+                }
+                # Check if the unique ID exists in the DataFrame
+                if (chunk['Click here to join the course'] == url).any():
+                    # Get the index of the row with the specified unique identifier
+                    row_index = (chunk['Click here to join the course'] == url).idxmax()
+                    print(url, row_index)
+                    # Update the row with new attributes
+                    for key, value in new_attributes.items():
+                        chunk.loc[row_index, key] = value
+                    # Get the updated row using the index
+                    print('🧩 FEEDING DICT DATA INTO CSV FILE =', row_index)
+                    # updated_row = chunk.iloc[row_index]
+                    # Write the updated row to CSV file
+                    append_dict_to_csv(new_attributes, 'incremental.csv')
                     
-            #         print("👍 Row updated with new attributes:")
-            #     else:
-            #         print("Unique ID not found in the DataFrame.")
-            # except Exception as e:
-            #     # Write the error to the log file
-            #     f.write(f'🚨 Error processing value {url}: {str(e)}\n')
-            #     continue
+                    print("👍 Row updated with new attributes:")
+                else:
+                    print("Unique ID not found in the DataFrame.")
+            except Exception as e:
+                # Write the error to the log file
+                f.write(f'🚨 Error processing value {url}: {str(e)}\n')
+                continue
             print(f'✅ Successfully scraped url' + updated_url + '\n' + '----------' + '\n')
     return chunk
 # Open a log file for writing errors
