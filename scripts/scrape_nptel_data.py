@@ -7,8 +7,11 @@ import json
 from concurrent.futures import ProcessPoolExecutor
 import os
 import csv
+from dotenv import load_dotenv
 
-openai.api_key = "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"
+load_dotenv()
+
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 from builtins import str
 
@@ -196,7 +199,7 @@ def process_csv_chunk(chunk):
 import pandas as pd
 from concurrent.futures import ProcessPoolExecutor
 
-curr_url = 'https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/merged-pending.csv'
+curr_url = 'https://testbucket1841.s3.ap-south-1.amazonaws.com/csv-dump/pending.csv'
 file_path = curr_url
 df = pd.read_csv(file_path)
 print("🐍 Length of the dataframe currently being looked at is -",len(df))
