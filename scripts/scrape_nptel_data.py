@@ -142,7 +142,7 @@ def append_dict_to_csv(data, csv_file):
 
 def process_csv_chunk(chunk):
     with open('error.log', 'w') as f:
-        for i, url in enumerate(chunk.iloc[:,12]):
+        for i, url in enumerate(chunk.iloc[:,16]):
             # selected_row = urls.loc[urls['Click here to join the course'] == url].idxmax()
             # selected_row_index = np.argmax(urls['Click here to join the course'] == url)
             # print(selected_row_index)
